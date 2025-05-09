@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, MessageSquare, Award, Calendar } from "lucide-react";
+import { Users, MessageSquare, Award, Calendar, Leaf } from "lucide-react";
 
 const Community = () => {
   return (
@@ -28,7 +28,7 @@ const Community = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Community Benefits</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Benefit 1 */}
             <Card className="border-t-4 border-t-tekk-purple">
               <CardContent className="pt-6 flex flex-col items-center text-center">
@@ -69,6 +69,17 @@ const Community = () => {
                 <h3 className="text-xl font-semibold mb-2">Events</h3>
                 <p className="text-gray-600">
                   Participate in virtual workshops, hackathons, and networking events.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* New Benefit: Sustainability Impact */}
+            <Card className="border-t-4 border-t-tekk-purple">
+              <CardContent className="pt-6 flex flex-col items-center text-center">
+                <Leaf className="h-12 w-12 text-tekk-purple mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Sustainability Impact</h3>
+                <p className="text-gray-600">
+                  Access tools that provide visibility into the environmental impact of your digital operations and guide towards greener practices.
                 </p>
               </CardContent>
             </Card>
