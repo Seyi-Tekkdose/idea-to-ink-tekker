@@ -9,6 +9,11 @@ import { Label } from "@/components/ui/label";
 import { FileText, Layout as LayoutIcon, Pencil } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
+import OpenAI from "openai";
+const client = new OpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true
+});
 
 const Create = () => {
   const navigate = useNavigate();
@@ -16,7 +21,7 @@ const Create = () => {
   const [documentType, setDocumentType] = useState("prd");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (idea.trim().length < 10) {
@@ -26,18 +31,40 @@ const Create = () => {
 
     setIsSubmitting(true);
 
+    const InstructionForPRD = `Create a Product Requirement Document based on the following idea: ${idea}`;
+    const InstructionForFRD = `Create a Functional Requirement Document based on the following idea: ${idea}`;
+    const InstructionForMockup = `Create a simple HTML page based on the following idea: ${idea}`;
+
+    const response = await client.responses.create({
+        model: "gpt-4.1",
+        input: documentType === "prd" ? InstructionForPRD : documentType === "frd" ? InstructionForFRD : InstructionForMockup,
+    });
+
+    setIsSubmitting(false);
+    console.log(response);
+
+    localStorage.setItem("tekkIdeaSubmission", JSON.stringify({
+      idea,
+      documentType,
+      response: response.output_text,
+      timestamp: new Date().toISOString()
+    }));
+
+    navigate("/result");
+
     // Simulate processing time
-    setTimeout(() => {
-      setIsSubmitting(false);
-      // Store the data in localStorage for demo purposes
-      localStorage.setItem("tekkIdeaSubmission", JSON.stringify({
-        idea,
-        documentType,
-        timestamp: new Date().toISOString()
-      }));
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    //   // Store the data in localStorage for demo purposes
+    //   localStorage.setItem("tekkIdeaSubmission", JSON.stringify({
+    //     idea,
+    //     documentType,
+    //     response: response.output_text,
+    //     timestamp: new Date().toISOString()
+    //   }));
       
-      navigate("/result");
-    }, 2000);
+    //   navigate("/result");
+    // }, 2000);
   };
 
   return (

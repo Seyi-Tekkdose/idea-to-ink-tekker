@@ -15,6 +15,7 @@ interface IdeaSubmission {
   idea: string;
   documentType: string;
   timestamp: string;
+  response: string;
 }
 
 const mockPRD = `
@@ -133,24 +134,30 @@ const Result = () => {
   });
 
   useEffect(() => {
-    const storedSubmission = localStorage.getItem("tekkIdeaSubmission");
+    async function fetchSubmission() {
+      const storedSubmission = localStorage.getItem("tekkIdeaSubmission");
     
-    if (!storedSubmission) {
-      navigate("/create");
-      return;
+      if (!storedSubmission) {
+        navigate("/create");
+        return;
+      }
+      
+      const parsedSubmission = JSON.parse(storedSubmission) as IdeaSubmission;
+      setSubmission(parsedSubmission);
+      
+      // Set content based on document type
+      if (parsedSubmission.documentType === "prd") {
+        // setContent(mockPRD);
+        setContent(parsedSubmission.response);
+      } else if (parsedSubmission.documentType === "frd") {
+        // setContent(mockFRD);
+        setContent(parsedSubmission.response);
+      } else {
+        // setContent(mockMockup);
+        setContent(parsedSubmission.response);
+      }
     }
-    
-    const parsedSubmission = JSON.parse(storedSubmission) as IdeaSubmission;
-    setSubmission(parsedSubmission);
-    
-    // Set content based on document type
-    if (parsedSubmission.documentType === "prd") {
-      setContent(mockPRD);
-    } else if (parsedSubmission.documentType === "frd") {
-      setContent(mockFRD);
-    } else {
-      setContent(mockMockup);
-    }
+    fetchSubmission();
   }, [navigate]);
 
   const handleDownload = () => {
@@ -236,7 +243,12 @@ const Result = () => {
             <Card className="shadow-lg animate-fade-in mb-8">
               <div className="p-6 md:p-8">
                 <div className="bg-gray-50 rounded-lg p-6 overflow-auto max-h-[60vh] font-mono text-sm whitespace-pre-wrap">
-                  {content}
+                  {/* mockup is an HTML content; inject it safely into the SOM*/}
+                  {submission.documentType === "mockup" ? 
+                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                    :
+                    <pre>{content}</pre>
+                  }
                 </div>
               </div>
             </Card>
