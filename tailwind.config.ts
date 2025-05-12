@@ -26,12 +26,12 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				tekk: {
-					purple: '#9b87f5',
-					'dark-purple': '#1A1F2C',
-					'secondary-purple': '#7E69AB',
-					'tertiary-purple': '#6E59A5',
-					'light-purple': '#D6BCFA',
-					'soft-purple': '#E5DEFF',
+					purple: '#D03737',
+					'dark-purple': '#100A1C',
+					'secondary-purple': '#A52A2A',
+					'tertiary-purple': '#FF6B6B',
+					'light-purple': '#F9DADA',
+					'soft-purple': '#FFECEC',
 					gray: '#8E9196',
 				},
 				primary: {
